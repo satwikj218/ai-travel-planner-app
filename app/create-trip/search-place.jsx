@@ -5,11 +5,13 @@ import { useNavigation } from 'expo-router'
 import { Colors } from '../../constants/Colors';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { CreateTripContext } from '../../context/CreateTripContext';
+import { useRouter } from 'expo-router';
 
 export default function SearchPlace() {
 
   const navigation = useNavigation();
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -21,7 +23,7 @@ export default function SearchPlace() {
 
   useEffect(() => {
     console.log(tripData);
-  }),[tripData]
+  }), [tripData]
 
   return (
     <View style={{
@@ -36,21 +38,24 @@ export default function SearchPlace() {
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
           setTripData({
-            locationInfo:{
+            locationInfo: {
               name: data.description,
               coordinates: details?.geometry.location,
               photoRef: details?.photos[0]?.photo_reference,
               url: details?.url
             }
           });
+
+          router.push('/create-trip/select-traveler');
+
         }}
         query={{
           key: process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
           language: 'en',
         }}
         requestUrl={{
-            useOnPlatform: 'web', // or "all"
-            url: 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api', // or any proxy server that you prefer
+          useOnPlatform: 'web', // or "all"
+          url: 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api', // or any proxy server that you prefer
         }}
         styles={{
           textInputContainer: {
