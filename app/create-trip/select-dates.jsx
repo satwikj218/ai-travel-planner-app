@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ToastAndroid } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigation } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import { Colors } from './../../constants/Colors';
 import CalendarPicker from 'react-native-calendar-picker';
 import moment from 'moment';
@@ -12,6 +12,7 @@ export default function SelectDates() {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const { tripData, setTripData } = useContext(CreateTripContext);
+    const router = useRouter();
 
     useEffect(() => {
         navigation.setOptions({
@@ -22,27 +23,30 @@ export default function SelectDates() {
     }, []);
 
     const onDateChange = (date, type) => {
-        if(type=='START_DATE'){
+        if (type == 'START_DATE') {
             setStartDate(moment(date));
         }
-        else{
+        else {
             setEndDate(moment(date));
         }
     }
 
     const OnDateSelectionContinue = () => {
-        if(!startDate && !endDate){
+        if (!startDate && !endDate) {
             ToastAndroid.show('Please select a date range', ToastAndroid.LONG);
             return;
         }
 
         const totalNoOfDays = endDate.diff(startDate, 'days') + 1;
+
         setTripData({
             ...tripData,
             startDate: startDate,
             endDate: endDate,
             totalNoOfDays: totalNoOfDays,
         });
+
+        router.push('create-trip/select-budget');
     }
 
     return (
@@ -75,14 +79,14 @@ export default function SelectDates() {
                 />
             </View>
 
-            <TouchableOpacity 
-            onPress={OnDateSelectionContinue} 
-            style={{
-                padding: 15,
-                backgroundColor: Colors.PRIMARY,
-                borderRadius: 15,
-                marginTop: 35,
-            }}>
+            <TouchableOpacity
+                onPress={OnDateSelectionContinue}
+                style={{
+                    padding: 15,
+                    backgroundColor: Colors.PRIMARY,
+                    borderRadius: 15,
+                    marginTop: 35,
+                }}>
                 <Text style={{
                     textAlign: 'center',
                     color: Colors.WHITE,
