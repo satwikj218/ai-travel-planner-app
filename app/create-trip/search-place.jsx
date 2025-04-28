@@ -1,5 +1,5 @@
 // import 'react-native-get-random-values';
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { useNavigation } from 'expo-router'
 import { Colors } from '../../constants/Colors';
