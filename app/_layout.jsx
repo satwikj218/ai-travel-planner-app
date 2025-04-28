@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { CreateTripContext } from "../context/CreateTripContext";
+import { CreateTripContext } from "./../context/CreateTripContext";
 import { useState } from "react";
 
 export default function RootLayout() {

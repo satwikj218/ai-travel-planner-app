@@ -1,10 +1,10 @@
 // import 'react-native-get-random-values';
-import { View } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { useNavigation } from 'expo-router'
 import { Colors } from '../../constants/Colors';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { CreateTripContext } from '../../context/CreateTripContext';
+import { CreateTripContext } from './../../context/CreateTripContext';
 import { useRouter } from 'expo-router';
 
 export default function SearchPlace() {
@@ -23,7 +23,11 @@ export default function SearchPlace() {
 
   useEffect(() => {
     console.log(tripData);
-  }), [tripData]
+  }), [tripData];
+
+  const onClickContinue = () => {
+    router.push('/create-trip/select-traveler');
+  }
 
   return (
     <View style={{
@@ -37,17 +41,15 @@ export default function SearchPlace() {
         fetchDetails={true}
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
-          setTripData({
+          setTripData(prevTripData => ({
+            ...prevTripData,
             locationInfo: {
               name: data.description,
               coordinates: details?.geometry.location,
               photoRef: details?.photos[0]?.photo_reference,
               url: details?.url
             }
-          });
-
-          router.push('/create-trip/select-traveler');
-
+          }));
         }}
         query={{
           key: process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
@@ -65,6 +67,24 @@ export default function SearchPlace() {
           },
         }}
       />
+      
+      <TouchableOpacity
+        onPress={() => onClickContinue()}
+        style={{
+          padding: 15,
+          backgroundColor: Colors.PRIMARY,
+          borderRadius: 15,
+          marginTop: 20,
+        }}>
+        <Text style={{
+          textAlign: 'center',
+          color: Colors.WHITE,
+          fontFamily: 'outfit-medium',
+          fontSize: 20,
+        }}>
+          Continue
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }

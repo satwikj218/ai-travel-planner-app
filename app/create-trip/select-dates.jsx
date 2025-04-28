@@ -50,7 +50,7 @@ export default function SelectDates() {
     }
 
     return (
-        <View stye={{
+        <View style={{
             padding: 25,
             paddingTop: 75,
             backgroundColor: Colors.WHITE,
